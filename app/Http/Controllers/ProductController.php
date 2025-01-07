@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pricelist;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class PricelistController extends Controller
+class ProductController extends Controller
 {
     public function index()
     {
-        $pricelists = Pricelist::all();
-        return response()->json($pricelists);
+        $products = Product::all();
+        return response()->json($products);
     }
 
     public function show($id)
     {
-        $pricelist = Pricelist::findOrFail($id);
-        return response()->json($pricelist);
+        $product = Product::findOrFail($id);
+        return response()->json($product);
     }
 
     public function store(Request $request)
@@ -39,13 +39,13 @@ class PricelistController extends Controller
             'desc' => 'nullable|string',
         ]);
 
-        $pricelist = Pricelist::create($request->all());
-        return response()->json($pricelist, 201);
+        $product = Product::create($request->all());
+        return response()->json($product, 201);
     }
 
     public function update(Request $request, $id)
     {
-        $pricelist = Pricelist::findOrFail($id);
+        $product = Product::findOrFail($id);
 
         $request->validate([
             'product_name' => 'string|max:255',
@@ -65,14 +65,14 @@ class PricelistController extends Controller
             'desc' => 'string',
         ]);
 
-        $pricelist->update($request->all());
-        return response()->json($pricelist);
+        $product->update($request->all());
+        return response()->json($product);
     }
 
     public function destroy($id)
     {
-        $pricelist = Pricelist::findOrFail($id);
-        $pricelist->delete();
+        $product = Product::findOrFail($id);
+        $product->delete();
         return response()->json(null, 204);
     }
 }
