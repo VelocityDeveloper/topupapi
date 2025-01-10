@@ -28,6 +28,7 @@ return new class extends Migration
             $table->time('start_cut_off');
             $table->time('end_cut_off');
             $table->text('desc')->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

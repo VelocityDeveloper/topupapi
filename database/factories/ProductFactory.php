@@ -32,6 +32,7 @@ class ProductFactory extends Factory
             'start_cut_off' => $this->faker->time(),
             'end_cut_off' => $this->faker->time(),
             'desc' => $this->faker->paragraph,
+            'status' => $this->faker->boolean
         ];
     }
 }

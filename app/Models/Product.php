@@ -27,5 +27,6 @@ class Product extends Model
         'start_cut_off',
         'end_cut_off',
         'desc',
+        'status'
     ];
 }
