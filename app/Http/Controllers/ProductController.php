@@ -9,7 +9,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(20);
+        $products->withPath('/products');
         return response()->json($products);
     }
 
@@ -60,8 +61,8 @@ class ProductController extends Controller
             'unlimited_stock' => 'boolean',
             'stock' => 'integer',
             'multi' => 'boolean',
-            'start_cut_off' => 'date_format:H:i',
-            'end_cut_off' => 'date_format:H:i',
+            'start_cut_off' => 'date_format:H:i:s',
+            'end_cut_off' => 'date_format:H:i:s',
             'desc' => 'string',
         ]);
 

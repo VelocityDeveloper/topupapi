@@ -36,15 +36,17 @@ class PriceListService
     }
 
     $datas = $response->json();
-    Product::where('status', 1)->update(['status' => 0]);
+    $products = Product::save_datas($datas);
+    return $products;
+    // Product::where('status', 1)->update(['status' => 0]);
 
-    foreach ($datas['data'] as $data) {
-      $proccess = Product::updateOrCreate(
-        ['buyer_sku_code' => $data['buyer_sku_code']],
-        array_merge($data, ['status' => 1])
-      );
-      $message[] = $proccess;
-    }
-    return $message;
+    // foreach ($datas['data'] as $data) {
+    //   $proccess = Product::updateOrCreate(
+    //     ['buyer_sku_code' => $data['buyer_sku_code']],
+    //     array_merge($data, ['status' => 1])
+    //   );
+    //   $message[] = $proccess;
+    // }
+    // return $message;
   }
 }
