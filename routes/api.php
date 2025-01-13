@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductBrandController;
 use App\Http\Controllers\PriceListController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -14,6 +15,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('products', ProductController::class);
     Route::apiResource('product-category', ProductCategoryController::class);
+    Route::apiResource('product-brand', ProductBrandController::class);
 });
 
 Route::get('/relay', [PriceListController::class, 'index']);

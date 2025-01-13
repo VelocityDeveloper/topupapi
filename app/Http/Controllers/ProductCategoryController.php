@@ -14,11 +14,7 @@ class ProductCategoryController extends Controller
     public function index()
     {
         $category = ProductCategory::paginate(20);
-        // $category->withPath('products/category');
-        // //tambahkan accessor LogoUrl
-        // $category->each(function ($category) {
-        //     $category->LogoUrl = Storage::url($category->category_logo);
-        // });
+        $category->withPath('products/category');
         return response()->json($category);
     }
 
