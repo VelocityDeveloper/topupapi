@@ -10,4 +10,15 @@ class ProductCategory extends Model
         'category_name',
         'category_description',
     ];
+
+    protected $appends = ['logo_url'];
+
+    //attribute logo url
+    public function getLogoUrlAttribute()
+    {
+        if (!$this->category_logo) {
+            return null;
+        }
+        return asset('storage/' . $this->category_logo);
+    }
 }
