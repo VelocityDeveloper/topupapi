@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('type_name');
             $table->string('type_description')->nullable();
-            $table->string('brand_logo')->nullable();
+            $table->string('type_logo')->nullable();
             $table->timestamps();
         });
     }
