@@ -16,12 +16,17 @@ class CustomerSeeder extends Seeder
     {
         //buat 20 customer
         for ($i = 1; $i <= 20; $i++) {
-            Customer::create([
+            $customer = Customer::create([
                 'domain' => 'contoh' . fake()->domainName,
                 'email' => fake()->unique()->safeEmail(),
                 'name' => fake()->name(),
                 'telepon' => fake()->phoneNumber(),
                 'status' => fake()->randomElement([1, 0]),
+            ]);
+
+            $customer->license()->create([
+                'secret_key' => Str::uuid(),
+                'active' => true
             ]);
         }
     }

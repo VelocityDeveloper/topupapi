@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Customer extends Model
@@ -12,8 +13,6 @@ class Customer extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'secret_code',
-        'secret_key',
         'domain',
         'email',
         'name',
@@ -21,18 +20,31 @@ class Customer extends Model
         'status',
     ];
 
+    // Relasi satu ke satu dengan CustomerLicense
+    public function license()
+    {
+        return $this->hasOne(CustomerLicense::class, 'customer_id');
+    }
+
+    public static function generate_key($id)
+    {
+        $customer = Customer::with('license:customer_id,secret_key')->select('id', 'customer_code')->find($id);
+        if ($customer->license->secret_key) {
+            //generate ulang key
+            $customer->license()->update(['secret_key' => Str::uuid()]);
+        }
+        return response()->json($customer);
+    }
+
     //boot
     public static function boot()
     {
         parent::boot();
-        self::creating(function ($model) {
-            //buat juga data di table customer_licenses
-            $lastID = self::max('id');
-            // CustomerLicense::create([
-            //     'customer_id' => $model->id,
-            //     'secret_code' => Str::random(10),
-            //     'secret_key' => Str::uuid()
-            // ]);
+        self::creating(function ($customer) {
+            if (empty($customer->customer_code)) {
+                $lastID = self::max('id');
+                $customer->customer_code = fake()->regexify('[A-Z]{2}') . ($lastID + 1000);
+            }
         });
     }
 }

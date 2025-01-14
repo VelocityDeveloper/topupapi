@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -13,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->string('customer_code', 20)->unique();
             $table->string('domain')->unique();
             $table->string('email')->unique();
             $table->string('name');
@@ -20,15 +22,6 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->timestamps();
             $table->softDeletes();
-        });
-
-
-        Schema::create('customer_licenses', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->string('secret_code', 20)->unique();
-            $table->string('secret_key')->uuid();
-            $table->string('active')->boolean([true, false]);
         });
     }
 
