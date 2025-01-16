@@ -15,11 +15,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('products', ProductController::class);
-    Route::apiResource('product-category', ProductCategoryController::class);
-    Route::apiResource('product-brand', ProductBrandController::class);
-    Route::apiResource('product-type', ProductTypeController::class);
-    Route::apiResource('customer', CustomerController::class);
+
+    Route::apiResources([
+        'products' => ProductController::class,
+        'product-category' => ProductCategoryController::class,
+        'product-brand' => ProductBrandController::class,
+        'product-type' => ProductTypeController::class,
+        'customer' => CustomerController::class,
+    ]);
 
     Route::get('/relay', [PriceListController::class, 'index']);
     Route::get('/customer/key/{id}', [CustomerController::class, 'get_key']);

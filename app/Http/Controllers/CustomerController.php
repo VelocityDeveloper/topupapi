@@ -66,13 +66,21 @@ class CustomerController extends Controller
         return response()->json($customer);
     }
 
-    public function generate_key(string $id)
+    public function generate_key(Request $request, string $id)
     {
+        $request->validate([
+            'secret_key' => 'required|string|max:255',
+            'customer_code' => 'required|string|max:255',
+        ]);
+
         $customer = Customer::with('license:customer_id,secret_key')->select('id', 'customer_code')->find($id);
         if ($customer->license->secret_key) {
             //generate ulang key
             $customer->license()->update(['secret_key' => Str::uuid()]);
         }
-        return response()->json($customer);
+        return response()->json([
+            'customer_code' => $customer->customer_code,
+            'secret_key' => $customer->license->secret_key
+        ]);
     }
 }
