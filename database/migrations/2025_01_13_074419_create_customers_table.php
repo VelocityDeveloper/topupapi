@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('customer_code', 20)->unique();
             $table->string('domain')->unique();
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('name');
             $table->string('telepon')->nullable();
             $table->string('status')->nullable();
