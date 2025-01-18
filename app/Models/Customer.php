@@ -30,9 +30,15 @@ class Customer extends Model
             'status'    => $request['status'],
         ]);
 
+        //buat license
         $customer->license()->create([
             'secret_key' => Str::uuid(),
             'active' => true
+        ]);
+
+        //buat saldo
+        $customer->saldo()->create([
+            'nominal' => 0
         ]);
 
         return $customer;
@@ -42,6 +48,12 @@ class Customer extends Model
     public function license()
     {
         return $this->hasOne(CustomerLicense::class, 'customer_id');
+    }
+
+    // Relasi satu ke satu dengan CustomerSaldo
+    public function saldo()
+    {
+        return $this->hasOne(CustomerSaldo::class, 'customer_id');
     }
 
     public static function generate_key($id)
@@ -58,11 +70,21 @@ class Customer extends Model
     public static function boot()
     {
         parent::boot();
+
+        // Event ketika data dibuat
         self::creating(function ($customer) {
             if (empty($customer->customer_code)) {
                 $lastID = self::max('id');
                 $customer->customer_code = fake()->regexify('[A-Z]{2}') . ($lastID + 1000);
             }
+        });
+
+        // Event ketika data dihapus secara force delete
+        static::forceDeleted(function ($customer) {
+            // Menghapus data terkait di CustomerLicense
+            CustomerLicense::where('customer_id', $customer->id)->delete();
+            // Menghapus data terkait di CustomerSaldo
+            CustomerSaldo::where('customer_id', $customer->id)->delete();
         });
     }
 }
