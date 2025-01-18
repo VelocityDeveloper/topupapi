@@ -56,6 +56,12 @@ class Customer extends Model
         return $this->hasOne(CustomerSaldo::class, 'customer_id');
     }
 
+    // Relasi satu banyak dengan Transaction
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'customer_id');
+    }
+
     public static function generate_key($id)
     {
         $customer = Customer::with('license:customer_id,secret_key')->select('id', 'customer_code')->find($id);

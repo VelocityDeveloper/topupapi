@@ -15,14 +15,18 @@ class CustomerSeeder extends Seeder
      */
     public function run(): void
     {
-        //buat 20 customer
-        for ($i = 1; $i <= 20; $i++) {
-            Customer::add_new([
-                'domain'    => 'contoh-' . fake()->randomNumber(5, true) . fake()->domainName,
-                'email'     => fake()->unique()->safeEmail(),
-                'name'      => fake()->name(),
-                'telepon'   => fake()->phoneNumber(),
-                'status'    => fake()->randomElement([1, 0]),
+        $customers = Customer::factory()->count(20)->create();
+
+        foreach ($customers as $customer) {
+            //buat license
+            $customer->license()->create([
+                'secret_key' => Str::uuid(),
+                'active' => true
+            ]);
+
+            //buat saldo
+            $customer->saldo()->create([
+                'nominal' => 0
             ]);
         }
     }
