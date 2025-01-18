@@ -20,6 +20,24 @@ class Customer extends Model
         'status',
     ];
 
+    public static function add_new($request)
+    {
+        $customer = Customer::create([
+            'domain'    => $request['domain'],
+            'email'     => $request['email'],
+            'name'      => $request['name'],
+            'telepon'   => $request['telepon'],
+            'status'    => $request['status'],
+        ]);
+
+        $customer->license()->create([
+            'secret_key' => Str::uuid(),
+            'active' => true
+        ]);
+
+        return $customer;
+    }
+
     // Relasi satu ke satu dengan CustomerLicense
     public function license()
     {
