@@ -8,6 +8,9 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\Balance;
 use App\Observers\BalanceObserver;
 
+use App\Models\Transaction;
+use App\Observers\TransactionObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -28,5 +31,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Balance::observe(BalanceObserver::class);
+        Transaction::observe(TransactionObserver::class);
     }
 }
