@@ -62,6 +62,11 @@ class Customer extends Model
         return $this->hasMany(Transaction::class, 'customer_id');
     }
 
+    public function balances()
+    {
+        return $this->hasMany(Balance::class);
+    }
+
     public static function generate_key($id)
     {
         $customer = Customer::with('license:customer_id,secret_key')->select('id', 'customer_code')->find($id);
