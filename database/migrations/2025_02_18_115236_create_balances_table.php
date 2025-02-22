@@ -16,7 +16,7 @@ return new class extends Migration
             $table->enum('flow', ['in', 'out'])->default('in');
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->decimal('nominal', 10, 2);
-            $table->foreignId('transaction_id')->constrained('transactions')->onDelete('cascade')->nullable();
+            $table->foreignId('transaction_id')->nullable()->constrained('transactions')->onDelete('cascade');
             $table->string('description')->nullable();
             $table->timestamp('date');
             $table->timestamps();

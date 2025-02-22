@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Balance;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ProductSeeder::class,
             CustomerSeeder::class,
+            BalanceSeeder::class,
             TransactionSeeder::class
         ]);
     }

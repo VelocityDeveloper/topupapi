@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Customer;
 use App\Models\Transaction;
 use App\Models\Balance;
 use App\Models\CustomerSaldo;
@@ -15,7 +16,10 @@ class TransactionObserver
      */
     public function creating(Transaction $transaction)
     {
-        $customer = $transaction->customer;
+        $customer_id = $transaction->customer_id;
+
+        // Ambil customer
+        $customer = Customer::find($customer_id);
 
         if (!$customer) {
             throw new ModelNotFoundException("Customer tidak ditemukan.");
@@ -34,14 +38,10 @@ class TransactionObserver
      */
     public function created(Transaction $transaction): void
     {
-        // Saat Transaction telah berhasil dibuat, buat Balance 'out'.
-        Balance::create([
-            'flow'              => 'out',
-            'customer_id'       => $transaction->customer_id,
-            'nominal'           => $transaction->price,
-            'transaction_id'    => $transaction->id,
-            'description'       => 'Transaksi ' . $transaction->ref_id,
-        ]);
+        //jika status = success, buat Balance 'out'
+        if ($transaction->status == 'success') {
+            $this->createBalanceOut($transaction);
+        }
     }
 
     /**
@@ -49,7 +49,10 @@ class TransactionObserver
      */
     public function updated(Transaction $transaction): void
     {
-        //
+        //jika status = success, buat Balance 'out'
+        if ($transaction->status == 'success') {
+            $this->createBalanceOut($transaction);
+        }
     }
 
     /**
@@ -74,5 +77,20 @@ class TransactionObserver
     public function forceDeleted(Transaction $transaction): void
     {
         //
+    }
+
+
+    /**
+     * Saat transaction status = success, buat Balance 'out'.
+     */
+    private function createBalanceOut(Transaction $transaction): void
+    {
+        Balance::create([
+            'flow'              => 'out',
+            'customer_id'       => $transaction->customer_id,
+            'nominal'           => $transaction->price,
+            'transaction_id'    => $transaction->id,
+            'description'       => 'Transaksi ' . $transaction->ref_id,
+        ]);
     }
 }
