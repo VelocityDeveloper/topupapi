@@ -10,6 +10,8 @@ use App\Http\Controllers\ProductBrandController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\TransactionController;
+
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -18,12 +20,13 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResources([
-        'users' => UserController::class,
-        'products' => ProductController::class,
-        'product-category' => ProductCategoryController::class,
-        'product-brand' => ProductBrandController::class,
-        'product-type' => ProductTypeController::class,
-        'customer' => CustomerController::class,
+        'users'             => UserController::class,
+        'products'          => ProductController::class,
+        'product-category'  => ProductCategoryController::class,
+        'product-brand'     => ProductBrandController::class,
+        'product-type'      => ProductTypeController::class,
+        'customer'          => CustomerController::class,
+        'transaction'       => TransactionController::class
     ]);
 
     Route::get('/relay', [PriceListController::class, 'index']);

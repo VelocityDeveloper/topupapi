@@ -24,8 +24,6 @@ class TransactionFactory extends Factory
         // Ambil produk acak
         $product = $products->random();
 
-        // Menghasilkan tanggal acak antara satu bulan kebelakang dan sekarang
-        $randomDate = Carbon::now()->subMonth()->addSeconds(rand(0, Carbon::now()->diffInSeconds(Carbon::now()->subMonth())));
         return [
             'ref_id'            => fake()->numerify('FAKE##########'),
             'customer_no'       => fake()->numerify('08##########'),
@@ -35,8 +33,8 @@ class TransactionFactory extends Factory
             'message'           => 'TEST',
             'status'            => fake()->randomElement(['success', 'failed', 'pending', 'success']),
             'testing'           => true,
-            'created_at'        => $randomDate,
-            'updated_at'        => $randomDate,
+            'created_at'        => Carbon::now()->subDays(rand(0, 30)), // Menghasilkan tanggal acak antara satu bulan kebelakang dan sekarang
+            'updated_at'        => Carbon::now(),
         ];
     }
 }
