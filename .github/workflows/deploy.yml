@@ -18,6 +18,10 @@ jobs:
         with:
           php-version: '8.2' # versi PHP hosting 
 
+      - name: Install dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader
+
       - name: Upload via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -31,7 +35,8 @@ jobs:
             public/storage/**
             public/uploads/**
             storage/**
-            vendor/**
+            .git/**
+            .github/**
             node_modules/**            
           dangerous-clean-slate: false
 
